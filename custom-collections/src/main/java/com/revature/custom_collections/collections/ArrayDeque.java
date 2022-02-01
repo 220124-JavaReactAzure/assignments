@@ -83,7 +83,9 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public int size() {
-        return 0;
+    	int size = elements.length();
+    	
+        return size;
     }
 
     /**
