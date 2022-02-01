@@ -19,6 +19,8 @@ public class HashMap<K, V> implements Map<K, V> {
     @SuppressWarnings("unchecked")
     private Entry<K, V>[] entries = new Entry[DEFAULT_CAPACITY];
 
+    
+    
     /**
      * Returns the value to which the specified key is mapped, or null if this
      * map contains no mapping for the key.
@@ -28,7 +30,16 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        return null;
+        //search entries for key
+
+    	
+    	for(Entry currentEntry: entries){
+    		if (currentEntry.getKey() == key) {
+    				//on successful search
+    				return (V)(currentEntry.getValue());
+    		}
+    	}
+    	return null;
     }
 
     /**
