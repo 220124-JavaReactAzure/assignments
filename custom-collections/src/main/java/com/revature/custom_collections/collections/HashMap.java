@@ -35,14 +35,6 @@ public class HashMap<K, V> implements Map<K, V> {
 
         int index = hash & (DEFAULT_CAPACITY - 1);
         System.out.println("get index:" + index);
-    	
-    	// for(Node<K, V> currentEntry: entries){
-    	// 	if (currentEntry.getKey() == key) {
-    	// 			//on successful search
-    	// 			return (V)(currentEntry.getValue());
-    	// 	}
-    	// }
-    	// return null;
 
         V value = null;
         // int index = index(key);
@@ -109,6 +101,31 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V remove(K key) {
+
+        System.out.println("put key:" + key);
+        int hash = hash(key);
+        System.out.println("put hash:" + hash);
+
+        int index = hash & (DEFAULT_CAPACITY - 1);
+        System.out.println("put index:" + index);
+
+        Node<K, V> prevNode = null;
+        Node<K, V> currentNode = entries[index];
+
+        while (currentNode != null){
+            if(currentNode.getKey().equals(key)){
+                if(prevNode == null){
+                    currentNode = currentNode.next;
+                    entries[index] = currentNode;
+                    // return;
+                }else {
+                    prevNode.next = currentNode.next;
+                    // return;
+                }
+            }
+            prevNode = currentNode;
+            currentNode = currentNode.next;
+        }
         return null;
     }
 
@@ -120,6 +137,21 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
+        System.out.println("containsKey key:" + key);
+        int hash = hash(key);
+        System.out.println("containsKey hash:" + hash);
+
+        int index = hash & (DEFAULT_CAPACITY - 1);
+        System.out.println("containsKey index:" + index);
+
+        Node<K, V> currentNode = entries[index];
+
+        while (currentNode != null){
+            if(currentNode.getKey().equals(key)){
+                return true;
+            }
+            currentNode = currentNode.next;
+        }
         return false;
     }
 
@@ -131,6 +163,19 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsValue(V value) {
+        System.out.println("containsValue value:" + value);
+
+        for (int i = 0;i < DEFAULT_CAPACITY;i++){
+
+            Node<K, V> currentNode = entries[i];
+
+            while (currentNode != null){
+                if(currentNode.getValue().equals(value)){
+                    return true;
+                }
+                currentNode = currentNode.next;
+            }
+        }
         return false;
     }
 
@@ -141,7 +186,13 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        for (int i = 0;i < DEFAULT_CAPACITY;i++){
+            Node<K, V> currentNode = entries[i];
+            if (currentNode != null){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
