@@ -38,6 +38,15 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean add(T element) {
+    	try {
+    		if(element != null) {
+    			System.out.println("Congrats! The element exists!");
+    		}
+    	} catch(NullPointerException e) {
+    		System.out.println("The element you specified is null. Please specify a value that is not null.");
+    		e.printStackTrace();
+    	}
+    	
         return false;
     }
 
@@ -62,6 +71,10 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean isEmpty() {
+    	if(elements.length == 0) {
+    		return true;
+    	}
+    	
         return false;
     }
 
@@ -83,7 +96,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public int size() {
-    	int size = elements.length();
+    	int size = elements.length;
     	
         return size;
     }
