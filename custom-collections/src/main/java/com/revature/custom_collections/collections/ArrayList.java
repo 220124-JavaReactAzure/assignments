@@ -7,7 +7,7 @@ import java.util.Arrays;
  * including null. Each ArrayList instance has a capacity. The capacity is the size
  * of the array used to store the elements in the list. It is always at least as large
  * as the list size. As elements are added to an ArrayList, its capacity grows
- * automatically.
+ * automatically. For testing.
  *
  * @param <T> the type of elements maintained by this list
  */
