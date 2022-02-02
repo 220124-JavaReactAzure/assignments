@@ -17,7 +17,7 @@ public class HashMap<K, V> implements Map<K, V> {
     private final int DEFAULT_CAPACITY = 16;
 
     @SuppressWarnings("unchecked")
-    private Entry<K, V>[] entries = new Entry[DEFAULT_CAPACITY];
+    private Node<K, V>[] entries = new Node[DEFAULT_CAPACITY];
 
     /**
      * Returns the value to which the specified key is mapped, or null if this
@@ -28,7 +28,35 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        return null;
+        //search entries for key
+        System.out.println("get key:" + key);
+        int hash = hash(key);
+        System.out.println("get hash: " + hash);
+
+        int index = hash & (DEFAULT_CAPACITY - 1);
+        System.out.println("get index:" + index);
+    	
+    	// for(Node<K, V> currentEntry: entries){
+    	// 	if (currentEntry.getKey() == key) {
+    	// 			//on successful search
+    	// 			return (V)(currentEntry.getValue());
+    	// 	}
+    	// }
+    	// return null;
+
+        V value = null;
+        // int index = index(key);
+        Node<K, V> entry = entries[index];
+        while (entry != null){
+            
+            System.out.println("get getKey(): " + entry.getKey() + " - get getValue(): " + entry.getValue());
+            if(entry.getKey().equals(key)) {
+                value = entry.getValue();
+                break;
+            }
+            entry = entry.next;
+        }
+        return value;
     }
 
     /**
@@ -40,7 +68,36 @@ public class HashMap<K, V> implements Map<K, V> {
      * @return the previous value associated with key, or null if there was no mapping for key.
      */
     @Override
-    public V put(K key, V value) {
+    public V put(K key, V val) {
+
+        System.out.println("put key:" + key + " val: " + val);
+        int hash = hash(key);
+        System.out.println("put hash:" + hash);
+
+        int index = hash & (DEFAULT_CAPACITY - 1);
+        System.out.println("put index:" + index);
+
+        // int index = index(key);
+        // Node<K, V> newEntry = Node<K, V>(hash, key, val, null);
+        Node<K, V> newEntry = new Node<>(hash, key, val, null);
+        if(entries[index] == null){
+            entries[index] = newEntry;
+        }else {
+            Node<K, V> previousNode = null;
+            Node<K, V> currentNode = entries[index];
+            while(currentNode != null){
+                if(currentNode.getKey().equals(key)){
+                    currentNode.setValue(val);
+                    break;
+                }
+                previousNode = currentNode;
+                currentNode = currentNode.next;
+            }
+            if(previousNode != null)
+                previousNode.next = newEntry;
+            }
+
+        // size++;
         return null;
     }
 
@@ -94,7 +151,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     /**
@@ -115,6 +172,7 @@ public class HashMap<K, V> implements Map<K, V> {
             this.value = value;
             this.next = next;
         }
+
 
         public final K getKey()        { return key; }
         public final V getValue()      { return value; }
