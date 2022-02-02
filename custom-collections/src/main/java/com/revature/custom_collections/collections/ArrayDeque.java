@@ -5,6 +5,8 @@ package com.revature.custom_collections.collections;
  * capacity restrictions; they grow as necessary to support usage. Null elements
  * are prohibited.
  *
+ *Altered by Christian Mains
+ *
  * @param <T> the type of elements maintained by this list
  */
 public class ArrayDeque<T> implements Deque<T> {
