@@ -40,7 +40,12 @@ public class ArrayDeque<T> implements Deque<T> {
 	public boolean add(T element) throws NullPointerException {
 
 		if (element != null) {
-			System.out.println("Congrats! The element exists!");
+			elements = new Object[elements.length + 1];
+			
+			T elementToAdd = (T) element;
+			
+			elements[elements.length - 1] = elementToAdd;
+			
 			return true;
 		} else {
 			throw new NullPointerException();
@@ -148,9 +153,19 @@ public class ArrayDeque<T> implements Deque<T> {
 	 *
 	 * @return the head of this deque, or null if this deque is empty
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T peekFirst() {
-		return null;
+		if(elements != null) {
+			T head = (T) elements[0];
+			
+			String response = "The head is: " + head;
+			
+			return (T) response;
+		} else {			
+			return null;
+		}
+		
 	}
 
 	/**
@@ -159,9 +174,19 @@ public class ArrayDeque<T> implements Deque<T> {
 	 *
 	 * @return the tail of this deque, or null if this deque is empty
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T peekLast() {
-		return null;
+		if(elements != null) {
+			T tail = (T) elements[elements.length - 1];
+			
+			String response = "The tail is: " + tail;
+			
+			return (T) response;
+		} else {
+			return null;
+		}
+		
 	}
 
 	/**
