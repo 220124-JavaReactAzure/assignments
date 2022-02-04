@@ -9,174 +9,306 @@ package com.revature.custom_collections.collections;
  */
 public class ArrayDeque<T> implements Deque<T> {
 
-    private Object[] elements;
+	private Object[] elements;
 
-    /**
-     * Constructs an empty array deque with an initial capacity sufficient to
-     * hold 16 elements.
-     */
-    public ArrayDeque() {
-        elements = new Object[16];
-    }
+	/**
+	 * Constructs an empty array deque with an initial capacity sufficient to hold
+	 * 16 elements.
+	 */
+	public ArrayDeque() {
+		elements = new Object[16];
+	}
 
-    /**
-     * Constructs an empty array deque with an initial capacity sufficient to
-     * hold the specified number of elements.
-     *
-     * @param initialCapacity lower bound on initial capacity of the deque
-     */
-    public ArrayDeque(int initialCapacity) {
-        elements = new Object[initialCapacity];
-    }
+	/**
+	 * Constructs an empty array deque with an initial capacity sufficient to hold
+	 * the specified number of elements.
+	 *
+	 * @param initialCapacity lower bound on initial capacity of the deque
+	 */
+	public ArrayDeque(int initialCapacity) {
+		elements = new Object[initialCapacity];
+	}
 
-    /**
-     * Inserts the specified element at the end of this deque.
-     *
-     * @param element the element to add
-     * @return true
-     * @throws NullPointerException if the specified element is null
-     */
-    @Override
-    public boolean add(T element) {
-        return false;
-    }
+	/**
+	 * Inserts the specified element at the end of this deque.
+	 *
+	 * @param element the element to add
+	 * @return true
+	 * @throws NullPointerException if the specified element is null
+	 */
+	@Override
+	public boolean add(T element) {
 
+		try {
 
-    /**
-     * Returns true if this deque contains the specified element. More formally,
-     * returns true if and only if this deque contains at least one element e such
-     * that o.equals(e).
-     *
-     * @param element object to be checked for containment in this deque
-     * @return true if this deque contains the specified element
-     */
-    @Override
-    public boolean contains(T element) {
-        return false;
-    }
+			if (this.isEmpty()) {
+				// resize Deque to 1 in the case that it's empty
+				Object[] newDeque = new Object[1];
+				newDeque[0] = element;
+				elements = newDeque;
+				return true;
+			} else {
+				Object[] newDeque = new Object[elements.length + 1];
 
-    /**
-     * Returns true if this deque contains no elements.
-     *
-     * @return true if this deque contains no elements
-     */
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
+				for (int i = 0; i < elements.length; i++) {
+					// does this full/deep copy, or is it just copying the reference
+					newDeque[i] = elements[i];
+				}
+				newDeque[elements.length] = element;
 
-    /**
-     * Removes the first occurrence of the specified element in this deque (when
-     * traversing the deque from head to tail). If the deque does not contain the
-     * element, it is unchanged. More formally, removes the first element e such
-     * that o.equals(e) (if such an element exists). Returns true if this deque
-     * contained the specified element (or equivalently, if this deque changed
-     * as a result of the call).
-     *
-     * @param element element to be removed from this deque, if present
-     * @return true if the deque contained the specified element
-     */
-    @Override
-    public boolean remove(T element) {
-        return false;
-    }
+				// reassign elements Object
+				elements = newDeque;
 
-    //TODO
-    @Override
-    public int size() {
-        return 0;
-    }
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 
-    /**
-     * Inserts the specified element at the front of this deque.
-     *
-     * @param element the element to add
-     * @throws NullPointerException if the specified element is null
-     */
-    @Override
-    public void addFirst(T element) {
+	}
 
-    }
+	/**
+	 * Returns true if this deque contains the specified element. More formally,
+	 * returns true if and only if this deque contains at least one element e such
+	 * that o.equals(e).
+	 *
+	 * @param element object to be checked for containment in this deque
+	 * @return true if this deque contains the specified element
+	 */
+	@Override
+	public boolean contains(T element) {
+		for (Object currentElement : elements) {
+			if (currentElement.equals(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    /**
-     * Inserts the specified element at the end of this deque.
-     *
-     * @param element the element to add
-     * @throws NullPointerException if the specified element is null
-     */
-    @Override
-    public void addLast(T element) {
+	/**
+	 * Returns true if this deque contains no elements.
+	 *
+	 * @return true if this deque contains no elements
+	 */
+	@Override
+	public boolean isEmpty() {
+		for (Object currentElement : this.elements) {
+			if (currentElement == null) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    }
+	/**
+	 * Removes the first occurrence of the specified element in this deque (when
+	 * traversing the deque from head to tail). If the deque does not contain the
+	 * element, it is unchanged. More formally, removes the first element e such
+	 * that o.equals(e) (if such an element exists). Returns true if this deque
+	 * contained the specified element (or equivalently, if this deque changed as a
+	 * result of the call).
+	 *
+	 * @param element element to be removed from this deque, if present
+	 * @return true if the deque contained the specified element
+	 */
+	@Override
+	public boolean remove(T element) {
+		if (this.contains(element)) {
+			if (elements.length == 1) {
+				elements[0] = null;
+				return true;
+			}
 
-    /**
-     * Retrieves and removes the first element of this deque, or returns null
-     * if this deque is empty.
-     *
-     * @return the head of this deque, or null if this deque is empty
-     */
-    @Override
-    public T pollFirst() {
-        return null;
-    }
+			int indexRMV = 0;
 
-    /**
-     * Retrieves and removes the last element of this deque, or returns null if
-     * this deque is empty.
-     *
-     * @return the tail of this deque, or null if this deque is empty
-     */
-    @Override
-    public T pollLast() {
-        return null;
-    }
+			for (int i = 0; i < elements.length; i++) {
+				if(elements[i].equals(element)) {
+					indexRMV = i;
+				}
+			}
 
-    /**
-     * Retrieves, but does not remove, the first element of this deque, or returns null
-     * if this deque is empty.
-     *
-     * @return the head of this deque, or null if this deque is empty
-     */
-    @Override
-    public T peekFirst() {
-        return null;
-    }
+			Object[] newDeque = new Object[elements.length - 1];
 
-    /**
-     * Retrieves, but does not remove, the last element of this deque, or returns null
-     * if this deque is empty.
-     *
-     * @return the tail of this deque, or null if this deque is empty
-     */
-    @Override
-    public T peekLast() {
-        return null;
-    }
+			for (int i = 0; i < indexRMV; i++) {
+				// does this full/deep copy, or is it just copying the reference
+				newDeque[i] = elements[i];
+			}
+			for (int i = indexRMV + 1; i < elements.length; i++) {
+				// does this full/deep copy, or is it just copying the reference
+				newDeque[i-1] = elements[i];
+			}
+			
 
-    /**
-     * Retrieves and removes the head of the queue represented by this deque (in other words,
-     * the first element of this deque), or returns null if this deque is empty.
-     *
-     * This method is equivalent to pollFirst().
-     *
-     * @return the head of the queue represented by this deque, or null if this deque is empty
-     */
-    @Override
-    public T poll() {
-        return null;
-    }
+			// reassign elements Object
+			elements = newDeque;
 
-    /**
-     * Retrieves, but does not remove, the head of the queue represented by this deque, or
-     * returns null if this deque is empty.
-     *
-     * This method is equivalent to peekFirst().
-     *
-     * @return the head of the queue represented by this deque, or null if this deque is empty
-     */
-    @Override
-    public T peek() {
-        return null;
-    }
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int size() {
+		return elements.length;
+	}
+
+	/**
+	 * Inserts the specified element at the front of this deque.
+	 *
+	 * @param element the element to add
+	 * @throws NullPointerException if the specified element is null
+	 */
+	@Override
+	public void addFirst(T element) {
+
+	}
+
+	/**
+	 * Inserts the specified element at the end of this deque.
+	 *
+	 * @param element the element to add
+	 * @throws NullPointerException if the specified element is null
+	 */
+	@Override
+	public void addLast(T element) {
+
+		try {
+
+			if (this.add(element)) {
+				// print success?
+			} else {
+				// print failure?
+			}
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Retrieves and removes the first element of this deque, or returns null if
+	 * this deque is empty.
+	 *
+	 * @return the head of this deque, or null if this deque is empty
+	 */
+	@Override
+	public T pollFirst() {
+		try {
+			T first = (T) elements[0];
+
+			this.remove(first);
+			return first;
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * Retrieves and removes the last element of this deque, or returns null if this
+	 * deque is empty.
+	 *
+	 * @return the tail of this deque, or null if this deque is empty
+	 */
+	@Override
+	public T pollLast() {
+		try {
+			T last = (T) elements[this.size() - 1];
+
+			this.remove(last);
+			return last;
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieves, but does not remove, the first element of this deque, or returns
+	 * null if this deque is empty.
+	 *
+	 * @return the head of this deque, or null if this deque is empty
+	 */
+	@Override
+	public T peekFirst() {
+		try {
+			T first = (T) elements[0];
+
+			return first;
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieves, but does not remove, the last element of this deque, or returns
+	 * null if this deque is empty.
+	 *
+	 * @return the tail of this deque, or null if this deque is empty
+	 */
+	@Override
+	public T peekLast() {
+		try {
+			T last = (T) elements[this.size() - 1];
+
+			return last;
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieves and removes the head of the queue represented by this deque (in
+	 * other words, the first element of this deque), or returns null if this deque
+	 * is empty.
+	 *
+	 * This method is equivalent to pollFirst().
+	 *
+	 * @return the head of the queue represented by this deque, or null if this
+	 *         deque is empty
+	 */
+	@Override
+	public T poll() {
+		try {
+			T first = (T) elements[0];
+			this.remove(first);
+			return first;
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieves, but does not remove, the head of the queue represented by this
+	 * deque, or returns null if this deque is empty.
+	 *
+	 * This method is equivalent to peekFirst().
+	 *
+	 * @return the head of the queue represented by this deque, or null if this
+	 *         deque is empty
+	 */
+	@Override
+	public T peek() {
+		try {
+			T first = (T) elements[0];
+
+			return first;
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 
 }
