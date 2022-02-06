@@ -162,7 +162,32 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addFirst(T element) {
+		try {
 
+			if (this.isEmpty()) {
+				// resize Deque to 1 in the case that it's empty
+				Object[] newDeque = new Object[1];
+				newDeque[0] = element;
+				elements = newDeque;
+
+			} else {
+				Object[] newDeque = new Object[elements.length + 1];
+
+				for (int i = 0; i < elements.length; i++) {
+					// does this full/deep copy, or is it just copying the reference
+					newDeque[i+1] = elements[i];
+				}
+				newDeque[0] = element;
+
+				// reassign elements Object
+				elements = newDeque;
+
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 	}
 
 	/**

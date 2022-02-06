@@ -19,8 +19,6 @@ public class HashMap<K, V> implements Map<K, V> {
     @SuppressWarnings("unchecked")
     private Entry<K, V>[] entries = new Entry[DEFAULT_CAPACITY];
 
-    
-    
     /**
      * Returns the value to which the specified key is mapped, or null if this
      * map contains no mapping for the key.
@@ -30,13 +28,22 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        //search entries for key
-
-    	
-    	for(Entry currentEntry: entries){
-    		if (currentEntry.getKey() == key) {
-    				//on successful search
-    				return (V)(currentEntry.getValue());
+    	Node node = getKeyEntry(key);
+    	if(node == null) {return null;}
+    	return (V)node.value;
+    }
+    
+    private Node getKeyEntry(K key) {
+    	int index = hash(key) % DEFAULT_CAPACITY;
+    	if(index < 0) {index = index * -1;}
+    	//System.out.println("This "+ key+ " has index "+index);
+    	if(entries[index] != null) {
+    		Node runner = (Node)entries[index];
+    		while(runner != null) {
+    			if(runner.getKey().equals(key)) {
+					return runner;
+				}
+				runner = runner.next;
     		}
     	}
     	return null;
@@ -52,7 +59,47 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V put(K key, V value) {
-        return null;
+    	int index = hash(key) % DEFAULT_CAPACITY;
+    	if(index < 0) {index = index * -1;}
+    	if(entries[index] == null) {
+    		Node newNode = new Node(hash(key), key, value, null);
+    		entries[index] = newNode;
+    		size ++;
+    		return null;
+    	}
+    	Node oldNode = (Node) entries[index];
+    	while(oldNode.next != null) {
+    		if(oldNode.key.equals(key)) {
+    			V answer = (V) oldNode.getValue();
+    			oldNode.setValue(value);
+    			return answer;
+    		}
+    		oldNode = oldNode.next;
+    	}
+    	if(oldNode.key.equals(key)) {
+			V answer = (V) oldNode.getValue();
+			oldNode.setValue(value);
+			return answer;
+		}
+    	oldNode.next = new Node(hash(key), key, value, null);
+    	size++;
+    	return null;
+    }
+    
+    public String printHashMap() {
+    	String answer = "";
+    	for(int i = 0; i < entries.length; i++) {
+    		answer = answer + i + ") ";
+    		if(entries[i] != null) {
+    			Node runner = (Node) entries[i];
+    			while(runner != null) {
+    				answer = answer + runner.getValue() + " : ";
+    				runner = runner.next;
+    			}
+    		}
+    		answer = answer + "\n";
+    	}
+    	return answer;
     }
 
     /**
@@ -63,7 +110,30 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V remove(K key) {
-        return null;
+    	int index = hash(key) % DEFAULT_CAPACITY;
+    	if(index < 0) {index = index * -1;}
+    	if(entries[index] == null) {
+    		return null;
+    	}
+    	Node previousNode = (Node) entries[index];
+    	if(previousNode.getKey().equals(key)) {
+    		V answer = (V) previousNode.getValue();
+    		entries[index] = ((Node)entries[index]).next;
+    		size--;
+    		return answer;
+    	}
+    	Node runner = previousNode.next;
+    	while(runner != null) {
+    		if(runner.getKey().equals(key)) {
+    			V answer = (V) runner.getValue();
+    			previousNode.next = runner.next;
+    			size--;
+    			return answer;
+    		}
+    		runner = runner.next;
+    		previousNode = previousNode.next;
+    	}
+    	return null;
     }
 
     /**
@@ -74,6 +144,8 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
+    	Node node = getKeyEntry(key);
+    	if(node != null) {return true;}
         return false;
     }
 
@@ -85,7 +157,18 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsValue(V value) {
-        return false;
+    	for (int i = 0; i < entries.length; i++){
+    		if(entries[i] != null) {
+    			Node runner = (Node) entries[i];
+    			while(runner != null) {
+    				if(runner.getValue().equals(value)) {
+    					return true;
+    				}
+    				runner = runner.next;
+    			}
+    		}
+    	}
+    	return false;
     }
 
     /**
@@ -95,7 +178,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     /**
@@ -105,7 +188,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
