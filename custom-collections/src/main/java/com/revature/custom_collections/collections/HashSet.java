@@ -1,4 +1,5 @@
 package com.revature.custom_collections.collections;
+import java.util.HashMap;
 
 /**
  * This class implements the Set interface, backed by a hash table (actually
@@ -8,12 +9,15 @@ package com.revature.custom_collections.collections;
  *
  * @param <T> the type of elements maintained by this set
  */
-public class HashSet<T> implements Set<T> {
+public class HashSet<T> implements Set<T>  {
 
+    // in our map instance, all keys will be generic and all values will be of type Object
+    // private final HashMap<T, Object> map;
     private final Map<T, Object> map;
 
+
     public HashSet() {
-        this.map = new HashMap<>();
+        this.map = new HashMap<T, Object>();
     }
 
     /**
@@ -23,7 +27,15 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        // check if the Set contains elements
+        if(this.map.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+        
     }
 
     /**
@@ -38,7 +50,15 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean add(T data) {
-        return false;
+        if(this.contains(data)){
+            return false;
+        }
+        else{
+            Object o = this.map.get(data);
+            this.map.put(data, o);
+            return true;
+        }
+        
     }
 
     /**
@@ -51,7 +71,13 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean contains(T data) {
-        return false;
+        if(this.map.containsKey(data)){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
     }
 
     /**
@@ -64,7 +90,16 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean remove(T data) {
-        return false;
+        if(this.map.containsKey(data)){
+            this.map.remove(data);
+            return true;
+
+        }
+        else{
+            return false;
+        }
+
+        
     }
 
     /**
@@ -74,7 +109,7 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public int size() {
-        return 0;
+        return this.map.size();
     }
 
 }
