@@ -28,7 +28,14 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        return null;
+        int hashed = key.hashCode() % DEFAULT_CAPACITY;
+        
+        if(entries[hashed] == null) {
+        	return null;
+        }
+        
+        Node<K,V> curr_val = entries[hashed];
+        
     }
 
     /**
@@ -84,6 +91,9 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean isEmpty() {
+        if (size == 0) {
+        	return true;
+        }
         return false;
     }
 
@@ -94,7 +104,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**

@@ -10,6 +10,8 @@ package com.revature.custom_collections.collections;
 public class ArrayDeque<T> implements Deque<T> {
 
     private Object[] elements;
+    private int end = 0;
+    private int size;
 
     /**
      * Constructs an empty array deque with an initial capacity sufficient to
@@ -17,6 +19,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     public ArrayDeque() {
         elements = new Object[16];
+        size = 16;
     }
 
     /**
@@ -27,6 +30,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     public ArrayDeque(int initialCapacity) {
         elements = new Object[initialCapacity];
+        size = initialCapacity;
     }
 
     /**
@@ -38,7 +42,20 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean add(T element) {
-        return false;
+    	if (element == null) {
+    		throw new NullPointerException();
+    	}
+    	elements[end] = element;
+    	end++;
+    	if (end == size) {
+    		Object[] newArr = new Object[size*2];
+    		for(int i = 0; i < end; i++) {
+    			newArr[i] = elements[i];
+    		}
+    		elements = newArr;
+    		size = size * 2;
+    	}
+        return true;
     }
 
 
@@ -52,7 +69,12 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean contains(T element) {
-        return false;
+        for(Object curr_element : elements) {
+        	if(curr_element.equals(element)) {
+        		return true;
+        	}
+        }
+		return false;
     }
 
     /**
@@ -62,6 +84,9 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean isEmpty() {
+        if (end == 0) {
+        	return true;
+        }
         return false;
     }
 
@@ -78,12 +103,24 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean remove(T element) {
-        return false;
+        if (end == 0) {
+        	return false;
+        }
+    	for(int i = 0; i < size; i++) {
+        	if(elements[i].equals(element)) {
+        		for(int j = i; j < end; j++) {
+        			elements[j] = elements[j+1];
+        		}
+        		end--;
+        		return true;
+        	}
+        }
+    	return false;
     }
 
     @Override
     public int size() {
-        return 0;
+        return end;
     }
 
     /**
@@ -94,7 +131,19 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public void addFirst(T element) {
-
+    	for(int i = end; i > 0; i--) {
+			elements[i] = elements[i-1];
+		}
+    	elements[0] = element;
+    	end++;
+    	if (end == size) {
+    		Object[] newArr = new Object[size*2];
+    		for(int i = 0; i < end; i++) {
+    			newArr[i] = elements[i];
+    		}
+    		elements = newArr;
+    		size = size * 2;
+    	}
     }
 
     /**
@@ -105,7 +154,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public void addLast(T element) {
-
+    	this.add(element);
     }
 
     /**
@@ -116,7 +165,14 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T pollFirst() {
-        return null;
+        if (this.isEmpty()) {
+        	return null;
+        }
+        
+        T ret_val = (T) elements[0];
+        this.remove((T) elements[0]);
+        return ret_val;
+        
     }
 
     /**
@@ -127,7 +183,12 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T pollLast() {
-        return null;
+        if (this.isEmpty()) {
+        	return null;
+        }
+        T ret_val = (T) elements[end-1];
+        this.remove((T) elements[end-1]);
+        return ret_val;
     }
 
     /**
@@ -138,7 +199,10 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T peekFirst() {
-        return null;
+        if (this.isEmpty()) {
+        	return null;
+        }
+    	return (T) elements[0];
     }
 
     /**
@@ -149,7 +213,10 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T peekLast() {
-        return null;
+    	if (this.isEmpty()) {
+        	return null;
+        }
+    	return (T) elements[end-1];
     }
 
     /**
@@ -162,7 +229,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T poll() {
-        return null;
+        return this.pollFirst();
     }
 
     /**
@@ -175,7 +242,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T peek() {
-        return null;
+        return this.peekFirst();
     }
 
 }
