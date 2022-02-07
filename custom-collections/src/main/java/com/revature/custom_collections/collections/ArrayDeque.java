@@ -65,6 +65,16 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public boolean contains(T element) {
+    if (element != null) {
+      final Object[] es = elements;
+      for (
+        int i = head, end = tail, to = (i <= end) ? end : es.length;;
+        i = 0, to = end
+      ) {
+        for (; i < to; i++) if (element.equals(es[i])) return true;
+        if (to == end) break;
+      }
+    }
     return false;
   }
 
@@ -95,7 +105,58 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public boolean remove(T element) {
+    if (element != null) {
+      final Object[] es = elements;
+      for (
+        int i = head, end = tail, to = (i <= end) ? end : es.length;;
+        i = 0, to = end
+      ) {
+        for (; i < to; i++) if (element.equals(es[i])) {
+          delete(i);
+          return true;
+        }
+        if (to == end) break;
+      }
+    }
     return false;
+  }
+  static final int sub(int i, int j, int modulus) {
+    if ((i -= j) < 0) i += modulus;
+    return i;
+}
+  boolean delete(int i) {
+    final Object[] es = elements;
+    final int capacity = es.length;
+    final int h, t;
+    // number of elements before to-be-deleted elt
+    final int front = sub(i, h = head, capacity);
+    // number of elements after to-be-deleted elt
+    final int back = sub(t = tail, i, capacity) - 1;
+    if (front < back) {
+      // move front elements forwards
+      if (h <= i) {
+        System.arraycopy(es, h, es, h + 1, front);
+      } else { // Wrap around
+        System.arraycopy(es, 0, es, 1, i);
+        es[0] = es[capacity - 1];
+        System.arraycopy(es, h, es, h + 1, front - (i + 1));
+      }
+      es[h] = null;
+      head = inc(h, capacity);
+      return false;
+    } else {
+      // move back elements backwards
+      tail = dec(t, capacity);
+      if (i <= tail) {
+        System.arraycopy(es, i + 1, es, i, back);
+      } else { // Wrap around
+        System.arraycopy(es, i + 1, es, i, capacity - (i + 1));
+        es[capacity - 1] = es[0];
+        System.arraycopy(es, 1, es, 0, t - 1);
+      }
+      es[tail] = null;
+      return true;
+    }
   }
 
   @Override
@@ -218,14 +279,15 @@ public class ArrayDeque<T> implements Deque<T> {
     if (e != null) es[tail = t] = null;
     return e;
   }
-    /**
-     * Returns element at array index i.
-     * This is a slight abuse of generics, accepted by javac.
-     */
-    @SuppressWarnings("unchecked")
-    static final <T> T elementAt(Object[] es, int i) {
-        return (T) es[i];
-    }
+
+  /**
+   * Returns element at array index i.
+   * This is a slight abuse of generics, accepted by javac.
+   */
+  @SuppressWarnings("unchecked")
+  static final <T> T elementAt(Object[] es, int i) {
+    return (T) es[i];
+  }
 
   /**
    * Retrieves, but does not remove, the first element of this deque, or returns

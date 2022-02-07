@@ -20,6 +20,7 @@ public class CollectionDriver {
         dq.add("data1");
         dq.add("data2");
         System.out.println(dq.isEmpty());
+        System.out.println(dq.contains());
         System.out.println(dq.toString());
 
         System.out.println("HashMap: ---------------");
