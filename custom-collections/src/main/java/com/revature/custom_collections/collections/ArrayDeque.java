@@ -40,11 +40,11 @@ public class ArrayDeque<T> implements Deque<T> {
 	public boolean add(T element) throws NullPointerException {
 
 		if (element != null) {
-			elements = new Object[elements.length + 1];
+			this.elements = new Object[elements.length + 1];
 			
 			T elementToAdd = (T) element;
 			
-			elements[elements.length - 1] = elementToAdd;
+			this.elements[elements.length - 1] = elementToAdd;
 			
 			return true;
 		} else {
@@ -63,6 +63,13 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public boolean contains(T element) {
+		
+		for(int i = 0; i < this.elements.length; i++) {
+			if(element.equals(this.elements[i])) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
@@ -73,11 +80,14 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		if (elements.length == 0) {
-			return true;
+		
+		for(int i = 0; i < this.elements.length; i++) {
+			if(this.elements[i] != null) {
+				return false;
+			}
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -93,6 +103,14 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public boolean remove(T element) {
+		
+		for(int i = 0; i < this.elements.length; i++) {
+			if(element.equals(this.elements[i])) {
+				this.elements[i] = null;
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
