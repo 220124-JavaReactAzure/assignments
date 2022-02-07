@@ -325,12 +325,9 @@ public class ArrayDeque<T> implements Deque<T> {
 						i++;
 					}
 				}
-				size--;
-				head = 0;
-				tail = size - 1;
 			} else {
 				int i = 0;
-				for (int j = head; j + head < size; j++) {
+				for (int j = head; j < capacity; j++) {
 					if (j != index) {
 						newArray[i] = elements[j];
 						i++;
@@ -342,9 +339,12 @@ public class ArrayDeque<T> implements Deque<T> {
 						i++;
 					}
 				}
-				size--;
-				head = 0;
-				tail = size - 1;
+			}
+			size--;
+			head = 0;
+			tail = size - 1;
+			elements = newArray;
+			for (int i=0; i<size; i++) {
 			}
 		}
 

@@ -70,6 +70,7 @@ public class CollectionDriver {
     	arrayDeque.addFirst("Seven");
     	System.out.println("Expecting Seven:" + arrayDeque.pollFirst());
     	System.out.println("Expecting Six:" + arrayDeque.pollFirst());
+    	System.out.println("Expecting 4:" +  arrayDeque.size() );
     	System.out.println("Expecting true:" + arrayDeque.remove("Four") );
     	System.out.println("Expecting false:" + arrayDeque.remove("Four") );
     }
