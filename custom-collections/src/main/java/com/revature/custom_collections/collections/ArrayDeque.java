@@ -13,6 +13,8 @@ public class ArrayDeque<T> implements Deque<T> {
   private int head;
   private int tail;
 
+  private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
   /**
    * Constructs an empty array deque with an initial capacity sufficient to hold
    * 16 elements.
@@ -110,10 +112,24 @@ public class ArrayDeque<T> implements Deque<T> {
    * @throws NullPointerException if the specified element is null
    */
   @Override
-  public void addFirst(T element) {}
+  public void addFirst(T element) {
+    if (element == null) throw new NullPointerException();
+    final Object[] es = elements;
+    es[head = dec(head, es.length)] = element;
+    if (head == tail) grow(1);
+  }
 
   static final int inc(int i, int modulus) {
     if (++i >= modulus) i = 0;
+    return i;
+  }
+
+  /**
+   * Circularly decrements i, mod modulus.
+   * Precondition and postcondition: 0 <= i < modulus.
+   */
+  static final int dec(int i, int modulus) {
+    if (--i < 0) i = modulus - 1;
     return i;
   }
 
@@ -178,7 +194,14 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public T pollFirst() {
-    return null;
+    final Object[] es;
+    final int h;
+    T e = (T) elements[0];
+    if (e != null) {
+      es[h] = null;
+      head = inc(h, es.length);
+    }
+    return e;
   }
 
   /**
@@ -189,8 +212,20 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public T pollLast() {
-    return null;
+    final Object[] es;
+    final int t;
+    T e = elementAt(es = elements, t = dec(tail, es.length));
+    if (e != null) es[tail = t] = null;
+    return e;
   }
+    /**
+     * Returns element at array index i.
+     * This is a slight abuse of generics, accepted by javac.
+     */
+    @SuppressWarnings("unchecked")
+    static final <T> T elementAt(Object[] es, int i) {
+        return (T) es[i];
+    }
 
   /**
    * Retrieves, but does not remove, the first element of this deque, or returns
@@ -238,7 +273,7 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public T poll() {
-    return null;
+    return pollFirst();
   }
 
   /**
@@ -252,12 +287,7 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public T peek() {
-    if (elements != null) {
-      T head = (T) elements[0];
-      return (T) head;
-    } else {
-      return null;
-    }
+    return peekFirst();
   }
   // return strBldr.toString();
 }
