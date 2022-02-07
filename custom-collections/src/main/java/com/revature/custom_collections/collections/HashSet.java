@@ -38,7 +38,8 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean add(T data) {
-        return false;
+    	
+        return map.put(data, null) != null;
     }
 
     /**
@@ -51,7 +52,7 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean contains(T data) {
-        return false;
+        return map.containsValue(data);
     }
 
     /**
@@ -64,7 +65,7 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public boolean remove(T data) {
-        return false;
+        return map.remove(data) != null;
     }
 
     /**

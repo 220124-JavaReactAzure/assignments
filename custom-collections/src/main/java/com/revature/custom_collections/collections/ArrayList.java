@@ -211,11 +211,9 @@ public class ArrayList<T> implements List<T> {
         }
         return -1;
     }
-
     protected boolean notInRange(int index) {
         return index < 0 || index >= size;
     }
-
     protected void resizeBackingArrayIfNeeded() {
         if (size >= elements.length * 0.75) {
             Object[] newBackingArray = new Object[nextSize()];
