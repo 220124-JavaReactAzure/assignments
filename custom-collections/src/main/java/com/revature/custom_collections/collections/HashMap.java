@@ -52,14 +52,14 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V put(K key, V value) {
-    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	int hash = Math.abs( key.hashCode() % DEFAULT_CAPACITY );
     	if (entries[hash] == null) {
-    		entries[key.hashCode() % DEFAULT_CAPACITY] = new Node<K, V>(hash, key, value, null);
+    		entries[hash] = new Node<K, V>(hash, key, value, null);
     		size++;
     		return null;
     	}
     	else {
-    		Node<K, V> cursor = entries[key.hashCode() % DEFAULT_CAPACITY];
+    		Node<K, V> cursor = entries[hash];
     		while (!cursor.getKey().equals(key)) {
     			if (cursor.next == null) {
     				cursor.next = new Node<K, V>(hash, key, value, null);
@@ -81,7 +81,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V remove(K key) {
-    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	int hash = Math.abs( key.hashCode() % DEFAULT_CAPACITY );
     	if (entries[hash] == null) {
     		return null;
     	}
@@ -116,7 +116,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
-    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	int hash = Math.abs( key.hashCode() % DEFAULT_CAPACITY );
     	if (entries[hash] == null) {
     		return false;
     	}
