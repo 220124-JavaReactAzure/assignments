@@ -28,7 +28,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	int hash = Math.abs( key.hashCode() % DEFAULT_CAPACITY);
     	if (entries[hash] == null) {
     		return null;
     	}
