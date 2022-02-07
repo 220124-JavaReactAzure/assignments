@@ -57,7 +57,6 @@ public class ArrayDeque<T> implements Deque<T> {
 					if (i < this.elements.length) {
 						newDeque[i] = this.elements[i];
 					}
-					System.out.println("Current index: " + newDeque[i]);
 				}
 
 				newDeque[newDeque.length - 1] = elementToAdd;
@@ -162,9 +161,9 @@ public class ArrayDeque<T> implements Deque<T> {
 						return;
 					}
 				}
-				Object[] newDeque = new Object[this.elements.length + 1];
+				Object[] newDeque = new Object[this.elements.length * 2];
 				for (int i = 0; i < newDeque.length; i++) {
-					if (i > 0) {
+					if (i > 0 && i < this.elements.length) {
 						newDeque[i] = this.elements[i - 1];
 					}
 				}
@@ -200,7 +199,7 @@ public class ArrayDeque<T> implements Deque<T> {
 						this.elements[this.elements.length - 1] = elementToAdd;
 					}
 				}
-				Object[] newDeque = new Object[this.elements.length + 1];
+				Object[] newDeque = new Object[this.elements.length * 2];
 				for (int i = 0; i < newDeque.length; i++) {
 					if (i < this.elements.length) {
 						newDeque[i] = this.elements[i];
