@@ -54,9 +54,10 @@ public class ArrayDeque<T> implements Deque<T> {
 				}
 				Object[] newDeque = new Object[this.elements.length + 1];
 				for (int i = 0; i < newDeque.length; i++) {
-					if (i + 1 < this.elements.length) {
+					if (i < this.elements.length) {
 						newDeque[i] = this.elements[i];
 					}
+					System.out.println("Current index: " + newDeque[i]);
 				}
 
 				newDeque[newDeque.length - 1] = elementToAdd;
@@ -201,7 +202,7 @@ public class ArrayDeque<T> implements Deque<T> {
 				}
 				Object[] newDeque = new Object[this.elements.length + 1];
 				for (int i = 0; i < newDeque.length; i++) {
-					if (i + 1 < this.elements.length) {
+					if (i < this.elements.length) {
 						newDeque[i] = this.elements[i];
 					}
 				}
