@@ -69,6 +69,11 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V remove(K key) {
+    	int hash = hash(key);
+    	int index = hash & (DEFAULT_CAPACITY - 1);
+    	
+    	Node<K, V> entry = entries[index];
+    	
         return null;
     }
 

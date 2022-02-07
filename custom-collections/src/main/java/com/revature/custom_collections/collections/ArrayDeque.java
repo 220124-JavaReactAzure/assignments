@@ -40,12 +40,31 @@ public class ArrayDeque<T> implements Deque<T> {
 	public boolean add(T element) throws NullPointerException {
 
 		if (element != null) {
-			this.elements = new Object[elements.length + 1];
-			
 			T elementToAdd = (T) element;
-			
-			this.elements[elements.length - 1] = elementToAdd;
-			
+
+			if (this.elements[this.elements.length - 1] == null) {
+				this.elements[elements.length - 1] = elementToAdd;
+			} else {
+				for (int i = this.elements.length - 2; i == 0; i--) {
+					if (this.elements[i] == null) {
+						this.elements[i] = this.elements[this.elements.length - 1];
+						this.elements[this.elements.length - 1] = elementToAdd;
+						return true;
+					}
+				}
+				Object[] newDeque = new Object[this.elements.length + 1];
+				for (int i = 0; i < newDeque.length; i++) {
+					if (i < this.elements.length) {
+						newDeque[i] = this.elements[i];
+					}
+					System.out.println("Current index: " + newDeque[i]);
+				}
+
+				newDeque[newDeque.length - 1] = elementToAdd;
+
+				this.elements = newDeque;
+			}
+
 			return true;
 		} else {
 			throw new NullPointerException();
@@ -63,13 +82,13 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public boolean contains(T element) {
-		
-		for(int i = 0; i < this.elements.length; i++) {
-			if(element.equals(this.elements[i])) {
+
+		for (int i = 0; i < this.elements.length; i++) {
+			if (element.equals(this.elements[i])) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -80,9 +99,9 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		
-		for(int i = 0; i < this.elements.length; i++) {
-			if(this.elements[i] != null) {
+
+		for (int i = 0; i < this.elements.length; i++) {
+			if (this.elements[i] != null) {
 				return false;
 			}
 		}
@@ -103,20 +122,20 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public boolean remove(T element) {
-		
-		for(int i = 0; i < this.elements.length; i++) {
-			if(element.equals(this.elements[i])) {
+
+		for (int i = 0; i < this.elements.length; i++) {
+			if (element.equals(this.elements[i])) {
 				this.elements[i] = null;
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public int size() {
-		int size = elements.length;
+		int size = this.elements.length;
 
 		return size;
 	}
@@ -129,7 +148,35 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addFirst(T element) {
+		
+		if (element != null) {
+			T elementToAdd = (T) element;
 
+			if (this.elements[0] == null) {
+				this.elements[0] = elementToAdd;
+			} else {
+				for (int i = 1; i < this.elements.length; i++) {
+					if (this.elements[i] == null) {
+						this.elements[i] = this.elements[0];
+						this.elements[0] = elementToAdd;
+						return;
+					}
+				}
+				Object[] newDeque = new Object[this.elements.length + 1];
+				for (int i = 0; i < newDeque.length; i++) {
+					if (i > 0) {
+						newDeque[i] = this.elements[i - 1];
+					}
+				}
+
+				newDeque[0] = elementToAdd;
+				
+				this.elements = newDeque;
+			}
+
+		} else {
+			throw new NullPointerException();
+		}
 	}
 
 	/**
@@ -140,7 +187,34 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addLast(T element) {
+		
+		if (element != null) {
+			T elementToAdd = (T) element;
 
+			if (this.elements[this.elements.length - 1] == null) {
+				this.elements[elements.length - 1] = elementToAdd;
+			} else {
+				for (int i = this.elements.length - 2; i == 0; i--) {
+					if (this.elements[i] == null) {
+						this.elements[i] = this.elements[this.elements.length - 1];
+						this.elements[this.elements.length - 1] = elementToAdd;
+					}
+				}
+				Object[] newDeque = new Object[this.elements.length + 1];
+				for (int i = 0; i < newDeque.length; i++) {
+					if (i < this.elements.length) {
+						newDeque[i] = this.elements[i];
+					}
+				}
+
+				newDeque[newDeque.length - 1] = elementToAdd;
+
+				this.elements = newDeque;
+			}
+
+		} else {
+			throw new NullPointerException();
+		}
 	}
 
 	/**
@@ -174,16 +248,16 @@ public class ArrayDeque<T> implements Deque<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T peekFirst() {
-		if(elements != null) {
+		if (elements != null) {
 			T head = (T) elements[0];
-			
+
 			String response = "The head is: " + head;
-			
+
 			return (T) response;
-		} else {			
+		} else {
 			return null;
 		}
-		
+
 	}
 
 	/**
@@ -195,16 +269,16 @@ public class ArrayDeque<T> implements Deque<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T peekLast() {
-		if(elements != null) {
+		if (elements != null) {
 			T tail = (T) elements[elements.length - 1];
-			
+
 			String response = "The tail is: " + tail;
-			
+
 			return (T) response;
 		} else {
 			return null;
 		}
-		
+
 	}
 
 	/**
