@@ -35,5 +35,14 @@ public class CollectionDriver {
         // HashSet<String> hs = new HashSet<>();
         // hs.add("data");
         // System.out.println(hs.isEmpty());
+    	
+    	// ArrayDeque adq = new ArrayDeque();
+    	
+    	// System.out.println(adq.peekFirst());
+    	
+    	// adq.add(27);
+    	
+    	// System.out.println(adq.peekLast());
+    	
     }
 }

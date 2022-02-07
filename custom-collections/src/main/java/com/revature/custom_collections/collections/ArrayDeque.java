@@ -9,20 +9,21 @@ package com.revature.custom_collections.collections;
  */
 public class ArrayDeque<T> implements Deque<T> {
 
-  private int size;
   private Object[] elements;
+  private int head;
+  private int tail;
 
   /**
-   * Constructs an empty array deque with an initial capacity sufficient to
-   * hold 16 elements.
+   * Constructs an empty array deque with an initial capacity sufficient to hold
+   * 16 elements.
    */
   public ArrayDeque() {
     elements = new Object[16];
   }
 
   /**
-   * Constructs an empty array deque with an initial capacity sufficient to
-   * hold the specified number of elements.
+   * Constructs an empty array deque with an initial capacity sufficient to hold
+   * the specified number of elements.
    *
    * @param initialCapacity lower bound on initial capacity of the deque
    */
@@ -38,10 +39,18 @@ public class ArrayDeque<T> implements Deque<T> {
    * @throws NullPointerException if the specified element is null
    */
   @Override
-  public boolean add(T element) {
-    elements[size] = element;
-    size++;
-    return true;
+  public boolean add(T element) throws NullPointerException {
+    if (element != null) {
+      elements = new Object[elements.length + 1];
+
+      T elementToAdd = (T) element;
+
+      elements[elements.length - 1] = elementToAdd;
+
+      return true;
+    } else {
+      throw new NullPointerException();
+    }
   }
 
   /**
@@ -64,6 +73,10 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public boolean isEmpty() {
+    if (elements.length == 0) {
+      return true;
+    }
+
     return false;
   }
 
@@ -72,8 +85,8 @@ public class ArrayDeque<T> implements Deque<T> {
    * traversing the deque from head to tail). If the deque does not contain the
    * element, it is unchanged. More formally, removes the first element e such
    * that o.equals(e) (if such an element exists). Returns true if this deque
-   * contained the specified element (or equivalently, if this deque changed
-   * as a result of the call).
+   * contained the specified element (or equivalently, if this deque changed as a
+   * result of the call).
    *
    * @param element element to be removed from this deque, if present
    * @return true if the deque contained the specified element
@@ -85,7 +98,9 @@ public class ArrayDeque<T> implements Deque<T> {
 
   @Override
   public int size() {
-    return this.size;
+    int size = elements.length;
+
+    return size;
   }
 
   /**
@@ -97,6 +112,50 @@ public class ArrayDeque<T> implements Deque<T> {
   @Override
   public void addFirst(T element) {}
 
+  static final int inc(int i, int modulus) {
+    if (++i >= modulus) i = 0;
+    return i;
+  }
+
+  /**
+   * Increases the capacity of this deque by at least the given amount.
+   *
+   * @param needed the required minimum extra capacity; must be positive
+   */
+  private void grow(int needed) {
+    // overflow-conscious code
+    final int oldCapacity = elements.length;
+    int newCapacity;
+    // Double capacity if small; else grow by 50%
+    int jump = (oldCapacity < 64) ? (oldCapacity + 2) : (oldCapacity >> 1);
+    if (
+      jump < needed || (newCapacity = (oldCapacity + jump)) - MAX_ARRAY_SIZE > 0
+    ) newCapacity = newCapacity(needed, jump);
+    final Object[] es = elements = Arrays.copyOf(elements, newCapacity);
+    // Exceptionally, here tail == head needs to be disambiguated
+    if (tail < head || (tail == head && es[head] != null)) {
+      // wrap around; slide first leg forward to end of array
+      int newSpace = newCapacity - oldCapacity;
+      System.arraycopy(es, head, es, head + newSpace, oldCapacity - head);
+      for (int i = head, to = (head += newSpace); i < to; i++) es[i] = null;
+    }
+  }
+
+  /** Capacity calculation for edge conditions, especially overflow. */
+  private int newCapacity(int needed, int jump) {
+    final int oldCapacity = elements.length, minCapacity;
+    if ((minCapacity = oldCapacity + needed) - MAX_ARRAY_SIZE > 0) {
+      if (minCapacity < 0) throw new IllegalStateException(
+        "Sorry, deque too big"
+      );
+      return Integer.MAX_VALUE;
+    }
+    if (needed > jump) return minCapacity;
+    return (oldCapacity + jump - MAX_ARRAY_SIZE < 0)
+      ? oldCapacity + jump
+      : MAX_ARRAY_SIZE;
+  }
+
   /**
    * Inserts the specified element at the end of this deque.
    *
@@ -105,13 +164,15 @@ public class ArrayDeque<T> implements Deque<T> {
    */
   @Override
   public void addLast(T element) {
-    elements[size] = element;
-    size++;
+    if (element == null) throw new NullPointerException();
+    final Object[] es = elements;
+    es[tail] = element;
+    if (head == (tail = inc(tail, es.length))) grow(1);
   }
 
   /**
-   * Retrieves and removes the first element of this deque, or returns null
-   * if this deque is empty.
+   * Retrieves and removes the first element of this deque, or returns null if
+   * this deque is empty.
    *
    * @return the head of this deque, or null if this deque is empty
    */
@@ -121,8 +182,8 @@ public class ArrayDeque<T> implements Deque<T> {
   }
 
   /**
-   * Retrieves and removes the last element of this deque, or returns null if
-   * this deque is empty.
+   * Retrieves and removes the last element of this deque, or returns null if this
+   * deque is empty.
    *
    * @return the tail of this deque, or null if this deque is empty
    */
@@ -132,34 +193,48 @@ public class ArrayDeque<T> implements Deque<T> {
   }
 
   /**
-   * Retrieves, but does not remove, the first element of this deque, or returns null
-   * if this deque is empty.
+   * Retrieves, but does not remove, the first element of this deque, or returns
+   * null if this deque is empty.
    *
    * @return the head of this deque, or null if this deque is empty
    */
+  @SuppressWarnings("unchecked")
   @Override
   public T peekFirst() {
-    return null;
+    if (elements != null) {
+      T head = (T) elements[0];
+      return (T) head;
+    } else {
+      return null;
+    }
   }
 
   /**
-   * Retrieves, but does not remove, the last element of this deque, or returns null
-   * if this deque is empty.
+   * Retrieves, but does not remove, the last element of this deque, or returns
+   * null if this deque is empty.
    *
    * @return the tail of this deque, or null if this deque is empty
    */
+  @SuppressWarnings("unchecked")
   @Override
   public T peekLast() {
-    return null;
+    if (elements != null) {
+      T tail = (T) elements[elements.length - 1];
+      return (T) tail;
+    } else {
+      return null;
+    }
   }
 
   /**
-   * Retrieves and removes the head of the queue represented by this deque (in other words,
-   * the first element of this deque), or returns null if this deque is empty.
+   * Retrieves and removes the head of the queue represented by this deque (in
+   * other words, the first element of this deque), or returns null if this deque
+   * is empty.
    *
    * This method is equivalent to pollFirst().
    *
-   * @return the head of the queue represented by this deque, or null if this deque is empty
+   * @return the head of the queue represented by this deque, or null if this
+   *         deque is empty
    */
   @Override
   public T poll() {
@@ -167,44 +242,22 @@ public class ArrayDeque<T> implements Deque<T> {
   }
 
   /**
-   * Retrieves, but does not remove, the head of the queue represented by this deque, or
-   * returns null if this deque is empty.
+   * Retrieves, but does not remove, the head of the queue represented by this
+   * deque, or returns null if this deque is empty.
    *
    * This method is equivalent to peekFirst().
    *
-   * @return the head of the queue represented by this deque, or null if this deque is empty
+   * @return the head of the queue represented by this deque, or null if this
+   *         deque is empty
    */
   @Override
   public T peek() {
-    return null;
-  }
-
-  @Override
-  public String toString() {
-    if (size == 0) {
-      return "[ ]";
+    if (elements != null) {
+      T head = (T) elements[0];
+      return (T) head;
+    } else {
+      return null;
     }
-
-    StringBuilder strBldr = new StringBuilder();
-    strBldr.append("[ ");
-    // Object runner = null;
-    int i = 0;
-    if (size > 0) {
-      Object runner = elements[i];
-      while (runner != null) {
-        //   for (int i = 0; i < this.size; i++) {
-        if (i == size - 1) {
-          strBldr.append(runner.toString()).append(" ");
-        } else {
-          strBldr.append(runner.toString()).append(", ");
-        }
-        i++;
-        runner = elements[i];
-      }
-    }
-
-    strBldr.append("]");
-
-    return strBldr.toString();
   }
+  // return strBldr.toString();
 }
