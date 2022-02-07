@@ -125,6 +125,7 @@ public class ArrayDeque<T> implements Deque<T> {
 			for (int i = 0; i < elements.length; i++) {
 				if(elements[i].equals(element)) {
 					indexRMV = i;
+					break;
 				}
 			}
 
@@ -207,8 +208,7 @@ public class ArrayDeque<T> implements Deque<T> {
 				// print failure?
 			}
 		} catch (NullPointerException e) {
-			e.getStackTrace();
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -226,7 +226,7 @@ public class ArrayDeque<T> implements Deque<T> {
 			this.remove(first);
 			return first;
 		} catch (NullPointerException e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 
 		return null;
@@ -247,8 +247,7 @@ public class ArrayDeque<T> implements Deque<T> {
 			this.remove(last);
 			return last;
 		} catch (NullPointerException e) {
-			e.getStackTrace();
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -266,8 +265,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
 			return first;
 		} catch (NullPointerException e) {
-			e.getStackTrace();
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -285,8 +283,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
 			return last;
 		} catch (NullPointerException e) {
-			e.getStackTrace();
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -308,8 +305,7 @@ public class ArrayDeque<T> implements Deque<T> {
 			this.remove(first);
 			return first;
 		} catch (NullPointerException e) {
-			e.getStackTrace();
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -330,8 +326,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
 			return first;
 		} catch (NullPointerException e) {
-			e.getStackTrace();
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
