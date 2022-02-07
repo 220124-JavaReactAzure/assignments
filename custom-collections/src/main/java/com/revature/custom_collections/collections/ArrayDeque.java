@@ -147,7 +147,7 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addFirst(T element) {
-		
+
 		if (element != null) {
 			T elementToAdd = (T) element;
 
@@ -169,7 +169,7 @@ public class ArrayDeque<T> implements Deque<T> {
 				}
 
 				newDeque[0] = elementToAdd;
-				
+
 				this.elements = newDeque;
 			}
 
@@ -186,7 +186,7 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addLast(T element) {
-		
+
 		if (element != null) {
 			T elementToAdd = (T) element;
 
@@ -222,8 +222,17 @@ public class ArrayDeque<T> implements Deque<T> {
 	 *
 	 * @return the head of this deque, or null if this deque is empty
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T pollFirst() {
+
+		T objectRetrieved = (T) this.elements[0];
+
+		if (this.elements[0] != null) {
+			this.elements[0] = null;
+			return objectRetrieved;
+		}
+
 		return null;
 	}
 
@@ -233,8 +242,17 @@ public class ArrayDeque<T> implements Deque<T> {
 	 *
 	 * @return the tail of this deque, or null if this deque is empty
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T pollLast() {
+
+		T objectRetrieved = (T) this.elements[this.elements.length - 1];
+
+		if (this.elements[this.elements.length - 1] != null) {
+			this.elements[this.elements.length - 1] = null;
+			return objectRetrieved;
+		}
+
 		return null;
 	}
 
@@ -290,8 +308,17 @@ public class ArrayDeque<T> implements Deque<T> {
 	 * @return the head of the queue represented by this deque, or null if this
 	 *         deque is empty
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T poll() {
+
+		T objectRetrieved = (T) this.elements[0];
+
+		if (this.elements[0] != null) {
+			this.elements[0] = null;
+			return objectRetrieved;
+		}
+
 		return null;
 	}
 
@@ -304,9 +331,18 @@ public class ArrayDeque<T> implements Deque<T> {
 	 * @return the head of the queue represented by this deque, or null if this
 	 *         deque is empty
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T peek() {
-		return null;
+		if (elements != null) {
+			T head = (T) elements[0];
+
+			String response = "The head is: " + head;
+
+			return (T) response;
+		} else {
+			return null;
+		}
 	}
 
 }
