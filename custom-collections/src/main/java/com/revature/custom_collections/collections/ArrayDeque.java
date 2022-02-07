@@ -344,8 +344,6 @@ public class ArrayDeque<T> implements Deque<T> {
 			head = 0;
 			tail = size - 1;
 			elements = newArray;
-			for (int i=0; i<size; i++) {
-			}
 		}
 
 	}
