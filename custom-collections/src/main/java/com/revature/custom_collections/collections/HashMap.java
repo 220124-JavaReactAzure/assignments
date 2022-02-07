@@ -17,7 +17,7 @@ public class HashMap<K, V> implements Map<K, V> {
     private final int DEFAULT_CAPACITY = 16;
 
     @SuppressWarnings("unchecked")
-    private Entry<K, V>[] entries = new Entry[DEFAULT_CAPACITY];
+    private Node<K, V>[] entries = new Node[DEFAULT_CAPACITY];
 
     /**
      * Returns the value to which the specified key is mapped, or null if this
@@ -28,7 +28,16 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        return null;
+        int hash = hash(key);
+
+        int index = hash & (DEFAULT_CAPACITY - 1);
+
+        V value = null;
+
+        Node<K, V> entry = entries[index];
+
+        value = entry.getValue();
+        return value;
     }
 
     /**
@@ -39,9 +48,17 @@ public class HashMap<K, V> implements Map<K, V> {
      * @param value value to be associated with the specified key
      * @return the previous value associated with key, or null if there was no mapping for key.
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public V put(K key, V value) {
-        return null;
+        int hash = hash(key);
+        int index = hash & (DEFAULT_CAPACITY - 1);
+        
+        Node<K, V> entry = entries[index];
+        
+        entry.setValue(value);
+        
+        return (V) entry;
     }
 
     /**
