@@ -94,7 +94,10 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	public ArrayDeque(int initialCapacity) {
 		elements = new Object[initialCapacity];
-		size = elements.length;
+		capacity = elements.length;
+		size = 0;
+		head = 0;
+		tail = 0;
 	}
 
 	/**

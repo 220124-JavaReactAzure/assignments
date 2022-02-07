@@ -14,7 +14,7 @@ import java.util.Objects;
 public class HashMap<K, V> implements Map<K, V> {
 
     private int size;
-    private final int DEFAULT_CAPACITY = 1;
+    private final int DEFAULT_CAPACITY = 16;
 
     @SuppressWarnings("unchecked")
     private Node<K, V>[] entries = new Node[DEFAULT_CAPACITY];
