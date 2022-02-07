@@ -5,7 +5,42 @@ import com.revature.custom_collections.collections.ArrayDeque;
 public class CollectionDriver {
 
 	public static void main(String[] args) {
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+// LOTS of ArrayDeque tests ---------------------------------------------------------------------------
+		
+		
+//		ArrayDeque<String> defaultAdq = new ArrayDeque<String>();
+//		
+//		System.out.println("DefaultAdq empty: " + defaultAdq.isEmpty());
+//		
+//		System.out.println("Element added to defaultAdq: " + defaultAdq.add("Hello"));
+//
+//		System.out.println("Size of defaultAdq: " + defaultAdq.size());
+//		
 //		ArrayDeque<Integer> adq = new ArrayDeque<Integer>(2);
 //
 //		System.out.println("Is the arrayDeque empty: " + adq.isEmpty());
@@ -63,6 +98,12 @@ public class CollectionDriver {
 //		System.out.println("ArrayDeque contains 1: " + adq.contains(1));
 //		
 //		System.out.println("Size of ArrayDeque: " + adq.size());
+//		
+//		System.out.println(adq.peek());
+//		
+//		System.out.println("Element removed from ArrayDeque: " + adq.poll());
+//		
+//		System.out.println(adq.peek());
 
 	}
 }

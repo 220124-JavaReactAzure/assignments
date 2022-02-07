@@ -52,7 +52,7 @@ public class ArrayDeque<T> implements Deque<T> {
 						return true;
 					}
 				}
-				Object[] newDeque = new Object[this.elements.length + 1];
+				Object[] newDeque = new Object[this.elements.length * 2];
 				for (int i = 0; i < newDeque.length; i++) {
 					if (i < this.elements.length) {
 						newDeque[i] = this.elements[i];
