@@ -57,6 +57,12 @@ public class CollectionDriver {
 		System.out.println(adq.peekLast());
 
 		System.out.println(adq.peekFirst());
+		
+		System.out.println("Remove element 1: " + adq.remove(1));
+		
+		System.out.println("ArrayDeque contains 1: " + adq.contains(1));
+		
+		System.out.println("Size of ArrayDeque: " + adq.size());
 
 	}
 }
