@@ -11,7 +11,6 @@ package com.revature.custom_collections.collections;
 public class HashSet<T> implements Set<T> {
 
   private final Map<T, Object> map;
-  private static final Object PRESENT = new Object();
 
   public HashSet() {
     this.map = new HashMap<>();
@@ -39,7 +38,11 @@ public class HashSet<T> implements Set<T> {
    */
   @Override
   public boolean add(T data) {
-    return map.put(data, PRESENT) == null;
+    if (map.containsKey(data)) {
+      return false;
+    }
+    map.put(data, data);
+    return true;
   }
 
   /**
@@ -52,7 +55,10 @@ public class HashSet<T> implements Set<T> {
    */
   @Override
   public boolean contains(T data) {
-    return map.containsKey(data);
+    if (map.containsKey(data)) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -65,7 +71,13 @@ public class HashSet<T> implements Set<T> {
    */
   @Override
   public boolean remove(T data) {
-    return map.remove(data)==PRESENT;
+    Object result = map.remove(data);
+
+    if (result == null) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -75,6 +87,6 @@ public class HashSet<T> implements Set<T> {
    */
   @Override
   public int size() {
-    return map.size();
+    return 0;
   }
 }
