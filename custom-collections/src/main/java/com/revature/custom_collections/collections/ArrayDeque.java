@@ -41,26 +41,26 @@ public class ArrayDeque<T> implements Deque<T> {
 
 		if (element != null) {
 			T elementToAdd = (T) element;
-			
-			if(this.elements[this.elements.length - 1] == null) {
+
+			if (this.elements[this.elements.length - 1] == null) {
 				this.elements[elements.length - 1] = elementToAdd;
 			} else {
-				for(int i = this.elements.length - 2; i == 0; i--) {
-					if(this.elements[i] == null) {
+				for (int i = this.elements.length - 2; i == 0; i--) {
+					if (this.elements[i] == null) {
 						this.elements[i] = this.elements[this.elements.length - 1];
 						this.elements[this.elements.length - 1] = elementToAdd;
 						return true;
 					}
 				}
 				Object[] newDeque = new Object[this.elements.length + 1];
-				for(int i = 0; i < newDeque.length; i++) {
-					if(i + 1 < this.elements.length) {
-						newDeque[i] = this.elements[i];						
+				for (int i = 0; i < newDeque.length; i++) {
+					if (i + 1 < this.elements.length) {
+						newDeque[i] = this.elements[i];
 					}
 				}
-				
+
 				newDeque[newDeque.length - 1] = elementToAdd;
-				
+
 				this.elements = newDeque;
 			}
 
@@ -147,7 +147,35 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addFirst(T element) {
+		
+		if (element != null) {
+			T elementToAdd = (T) element;
 
+			if (this.elements[0] == null) {
+				this.elements[0] = elementToAdd;
+			} else {
+				for (int i = 1; i < this.elements.length; i++) {
+					if (this.elements[i] == null) {
+						this.elements[i] = this.elements[0];
+						this.elements[0] = elementToAdd;
+						return;
+					}
+				}
+				Object[] newDeque = new Object[this.elements.length + 1];
+				for (int i = 0; i < newDeque.length; i++) {
+					if (i > 0) {
+						newDeque[i] = this.elements[i - 1];
+					}
+				}
+
+				newDeque[0] = elementToAdd;
+				
+				this.elements = newDeque;
+			}
+
+		} else {
+			throw new NullPointerException();
+		}
 	}
 
 	/**
@@ -158,7 +186,34 @@ public class ArrayDeque<T> implements Deque<T> {
 	 */
 	@Override
 	public void addLast(T element) {
+		
+		if (element != null) {
+			T elementToAdd = (T) element;
 
+			if (this.elements[this.elements.length - 1] == null) {
+				this.elements[elements.length - 1] = elementToAdd;
+			} else {
+				for (int i = this.elements.length - 2; i == 0; i--) {
+					if (this.elements[i] == null) {
+						this.elements[i] = this.elements[this.elements.length - 1];
+						this.elements[this.elements.length - 1] = elementToAdd;
+					}
+				}
+				Object[] newDeque = new Object[this.elements.length + 1];
+				for (int i = 0; i < newDeque.length; i++) {
+					if (i + 1 < this.elements.length) {
+						newDeque[i] = this.elements[i];
+					}
+				}
+
+				newDeque[newDeque.length - 1] = elementToAdd;
+
+				this.elements = newDeque;
+			}
+
+		} else {
+			throw new NullPointerException();
+		}
 	}
 
 	/**
