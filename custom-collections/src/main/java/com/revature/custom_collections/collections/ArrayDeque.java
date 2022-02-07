@@ -9,6 +9,10 @@ package com.revature.custom_collections.collections;
  */
 public class ArrayDeque<T> implements Deque<T> {
 
+	private int head;
+	private int tail;
+	private int size;
+	private int capacity;
     private Object[] elements;
 
     /**
@@ -17,6 +21,76 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     public ArrayDeque() {
         elements = new Object[16];
+        capacity = elements.length;
+        size = 0;
+        head = 0;
+        tail = 0;
+    }
+    
+    // if head moves left, what should the array index be?
+    public int nextHeadPush() {
+    	if (head == 0) {
+    		return capacity-1;
+    	}
+    	else if (size == 0) {
+    		return head;
+    	}
+    	else
+    		return head-1;
+    }
+    
+ // if head moves right, what should the array index be?
+    public int nextHeadPop() {
+    	if (head == capacity-1) {
+    		return 0;
+    	}
+    	else
+    		return head+1;
+    }
+    
+    // if tail moves right, what should the array index be?
+    public int nextTailPush() {
+    	if (tail == capacity-1) {
+    		return 0;
+    	}
+    	else if (size == 0) {
+    		return tail;
+    	}
+    	else
+    		return tail+1;
+    }
+    
+ // if tail moves left, what should the array index be?
+    public int nextTailPop() {
+    	if (tail == 0) {
+    		return capacity-1;
+    	}
+    	else
+    		return tail-1;
+    }
+    
+    // return first index of element searching from head to tail, or -1 if not found
+    public int find(T element) {
+    	if (head < tail) {
+    		for (int i=head; i<=tail; i++) {
+    			if (elements[i].equals(element)) {
+    				return i;
+    			}
+    		}
+    	}
+    	else {
+    		for (int i=head; i<capacity; i++) {
+    			if (elements[i].equals(element)) {
+    				return i;
+    			}
+    		}
+    		for (int i=0; i<=tail; i++) {
+    			if (elements[i].equals(element)) {
+    				return i;
+    			}
+    		}
+    	}
+    	return -1;
     }
 
     /**
@@ -27,6 +101,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     public ArrayDeque(int initialCapacity) {
         elements = new Object[initialCapacity];
+        size = elements.length;
     }
 
     /**
@@ -38,7 +113,14 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean add(T element) {
-        return false;
+    	if (element == null) {
+    		throw new NullPointerException();
+    	}
+    	growIfNecessary();
+    	tail = nextTailPush();
+    	elements[tail] = element;
+    	size++;
+        return true;
     }
 
 
@@ -52,7 +134,11 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean contains(T element) {
-        return false;
+        if (find(element)>=0) {
+        	return true;
+        }
+        else
+        	return false;
     }
 
     /**
@@ -62,7 +148,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     /**
@@ -78,12 +164,18 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public boolean remove(T element) {
+    	int i = find(element);
+    	if (i>=0) {
+    		removeAtIndex(i);
+    		size--;
+    		return true;
+    	}
         return false;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
@@ -94,7 +186,13 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public void addFirst(T element) {
-
+    	if (element == null) {
+    		throw new NullPointerException();
+    	}
+    	growIfNecessary();
+    	head = nextHeadPush();
+    	elements[head] = element;
+    	size++;
     }
 
     /**
@@ -105,7 +203,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public void addLast(T element) {
-
+    	add(element);
     }
 
     /**
@@ -116,7 +214,17 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T pollFirst() {
-        return null;
+    	T answer;
+        if (size==0) {
+        	return null;
+        }
+        else {
+        	answer = (T) elements[head];
+        	elements[head] = null;
+        	head = nextHeadPop();
+        	size--;
+        	return answer;
+        }
     }
 
     /**
@@ -127,7 +235,17 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T pollLast() {
-        return null;
+    	T answer;
+        if (size==0) {
+        	return null;
+        }
+        else {
+        	answer = (T) elements[tail];
+        	elements[tail] = null;
+        	tail = nextTailPop();
+        	size--;
+        	return answer;
+        }
     }
 
     /**
@@ -138,7 +256,12 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T peekFirst() {
-        return null;
+    	 if (size==0) {
+         	return null;
+         }
+    	 else {
+    		 return (T) elements[head];
+    	 }
     }
 
     /**
@@ -149,7 +272,12 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T peekLast() {
-        return null;
+    	if (size==0) {
+         	return null;
+         }
+    	 else {
+    		 return (T) elements[tail];
+    	 }
     }
 
     /**
@@ -162,7 +290,7 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T poll() {
-        return null;
+        return pollFirst();
     }
 
     /**
@@ -175,7 +303,49 @@ public class ArrayDeque<T> implements Deque<T> {
      */
     @Override
     public T peek() {
-        return null;
+        return peekFirst();
     }
 
+    // Checks to see if array is 1 away from being full. If it is, double in size.
+    // This should be called before adding an element to the Array Deque.
+    private void growIfNecessary() {
+    	if (size==capacity-1) {
+    		Object[] newArray = new Object[capacity*2];
+    		for (int i=0; i<size; i++) {
+    			newArray[i] = elements[i];
+    		}
+    		elements = newArray;
+    		head = 0;
+    		tail = size-1;
+    	}
+    }
+    
+    private void removeAtIndex(int index) {
+        if (index == 0) {
+            Object[] nextElements = new Object[elements.length];
+            System.arraycopy(elements, 1, nextElements, 0, elements.length - 2);
+            elements = nextElements;
+        } else if (index == size() - 1) {
+            elements[index] = null;
+        } else {
+            Object[] newElements = new Object[elements.length];
+            System.arraycopy(elements, 0, newElements, 0, index);
+            System.arraycopy(elements, index + 1, newElements, index, elements.length - index - 1);
+            elements = newElements;
+            System.out.println(elements[index]);
+            
+        }
+        if (index==head) {
+        	head = nextHeadPop();
+        }
+        if (index==tail) {
+        	tail = nextTailPop();
+        }
+        if (head < tail) {
+        	tail = nextTailPop();
+        }
+        else if (tail < head) {
+        	head = nextHeadPop();
+        }
+    }
 }

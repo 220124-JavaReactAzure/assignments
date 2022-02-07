@@ -14,10 +14,10 @@ import java.util.Objects;
 public class HashMap<K, V> implements Map<K, V> {
 
     private int size;
-    private final int DEFAULT_CAPACITY = 16;
+    private final int DEFAULT_CAPACITY = 1;
 
     @SuppressWarnings("unchecked")
-    private Entry<K, V>[] entries = new Entry[DEFAULT_CAPACITY];
+    private Node<K, V>[] entries = new Node[DEFAULT_CAPACITY];
 
     /**
      * Returns the value to which the specified key is mapped, or null if this
@@ -28,7 +28,18 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        return null;
+    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	if (entries[hash] == null) {
+    		return null;
+    	}
+    	Node<K, V> cursor = entries[hash];
+    	while ( ! cursor.getKey().equals(key) ) {
+    		if (cursor.next == null) {
+    			return null;
+    		}
+    		cursor = cursor.next;
+    	}
+    	return cursor.getValue();
     }
 
     /**
@@ -41,7 +52,25 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V put(K key, V value) {
-        return null;
+    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	if (entries[hash] == null) {
+    		entries[key.hashCode() % DEFAULT_CAPACITY] = new Node<K, V>(hash, key, value, null);
+    		size++;
+    		return null;
+    	}
+    	else {
+    		Node<K, V> cursor = entries[key.hashCode() % DEFAULT_CAPACITY];
+    		while (!cursor.getKey().equals(key)) {
+    			if (cursor.next == null) {
+    				cursor.next = new Node<K, V>(hash, key, value, null);
+    				size++;
+    				return null;
+    			}
+    			cursor = cursor.next;
+    		}
+    		size++;
+    		return cursor.setValue(value);
+    	}
     }
 
     /**
@@ -52,7 +81,31 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public V remove(K key) {
-        return null;
+    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	if (entries[hash] == null) {
+    		return null;
+    	}
+    	Node<K, V> cursor = entries[hash];
+    	Node<K, V> previous = entries[hash];
+    	while ( ! cursor.getKey().equals(key) ) {
+    		if (cursor.next == null) {
+    			return null;
+    		}
+    		previous = cursor;
+    		cursor = cursor.next;
+    	}
+    	V oldValue = cursor.getValue();
+    	
+    	if (cursor.equals(previous)) {
+    		entries[hash] = entries[hash].next;
+    		size--;
+    		return oldValue;
+    	}
+    	
+    	previous.next = cursor.next;
+    	cursor = null;
+    	size--;
+    	return oldValue;
     }
 
     /**
@@ -63,7 +116,18 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
-        return false;
+    	int hash = key.hashCode() % DEFAULT_CAPACITY;
+    	if (entries[hash] == null) {
+    		return false;
+    	}
+    	Node<K, V> cursor = entries[hash];
+    	while (!cursor.getKey().equals(key)) {
+    		if (cursor.next == null) {
+    			return false;
+    		}
+    		cursor = cursor.next;
+    	}
+        return true;
     }
 
     /**
@@ -74,6 +138,15 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsValue(V value) {
+    	for (int i=0; i<DEFAULT_CAPACITY; i++) {
+    		Node<K, V> cursor = entries[i];
+    		while (cursor != null) {
+    			if ( cursor.getValue().equals(value) ) {
+    				return true;
+    			}
+    			cursor = cursor.next;
+    		}
+    	}
         return false;
     }
 
@@ -84,7 +157,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     /**
@@ -94,7 +167,7 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
