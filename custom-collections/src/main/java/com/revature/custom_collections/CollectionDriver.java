@@ -64,5 +64,13 @@ public class CollectionDriver {
     	System.out.println("Expecting true:" + arrayDeque.remove("Two") );
     	System.out.println("Expecting 2:" +  arrayDeque.size() );
     	System.out.println("Expecting false:" +  arrayDeque.contains("Two") );
+    	arrayDeque.addFirst("Four");
+    	arrayDeque.addFirst("Five");
+    	arrayDeque.addFirst("Six");
+    	arrayDeque.addFirst("Seven");
+    	System.out.println("Expecting Seven:" + arrayDeque.pollFirst());
+    	System.out.println("Expecting Six:" + arrayDeque.pollFirst());
+    	System.out.println("Expecting true:" + arrayDeque.remove("Four") );
+    	System.out.println("Expecting false:" + arrayDeque.remove("Four") );
     }
 }
