@@ -44,6 +44,7 @@ Your first project will be launching a wedding planner(give it a name) for a com
 -   [ ] Mockito
 -   [ ] Apache Maven
 -   [ ] Hibernate
+-   [ ] Logging (any library ie Log4j)
 -   [ ] Jackson library (for JSON marshalling/unmarshalling)
 -   [ ] Java EE Servlet API (v4.0+)
 -   [ ] PostGreSQL deployed on Azure SQL
