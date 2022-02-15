@@ -31,7 +31,7 @@
 					<configuration>
 						<url>http://localhost:8080/manager/text</url>
 						<server>LocalTomcat</server>
-						<path>/helloHibernate</path>
+						<path>/hibernateChallenge</path>
 						<update>true</update>
 					</configuration>
 				</plugin>
@@ -60,7 +60,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		<!-- Added in the dependency for hibernate -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.4.32.Final</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
