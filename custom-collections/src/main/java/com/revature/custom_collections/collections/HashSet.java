@@ -75,7 +75,7 @@ public class HashSet<T> implements Set<T> {
      */
     @Override
     public int size() {
-        return 0;
+        return map.size();
     }
 
 }
