@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -20,6 +23,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(
 		  generator = ObjectIdGenerators.PropertyGenerator.class, 
 		  property = "id")
+@JsonIgnoreProperties(value="director", allowGetters = true)
 public class Movie {
 
 	@Id
@@ -37,9 +41,10 @@ public class Movie {
 	//We need to make this a foreign key to the Director table
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "director_id") //This is how you establish relationships and foreign keys - 
+	@JoinColumn(name = "director_id", nullable = false) //This is how you establish relationships and foreign keys - 
 									  //the name attribute must equal the name of the id of Director in the DB
 	//@Column(name = "director_id_fk") //gonna see if this works...
+	@JsonIgnoreProperties(value= {"filmography", "id"}) // this allows you to ignore properties from other objects
 	public Director director;
 
 	
@@ -136,10 +141,11 @@ public class Movie {
 	//WE NEED TO MANIPULATE OUR TOSTRING to kill the infinite loop
 	//Instead of calling a Director object (which has a List of Movies, each of which has a Director, thus infinite loop)
 		//We simply call some fields of the Director object (first name and last name) to end the infinite loop
+	
 	@Override
 	public String toString() {
 		return "Movie [id=" + id + ", title=" + title + ", genre=" + genre + 
-				", director=" + director.getFirst_name() + " " + director.getLast_name() + "]";
+				", director=" + director.getFirstName() + "]";
 	}
 
 

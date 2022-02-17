@@ -25,7 +25,7 @@ public class ContextLoaderListener implements ServletContextListener {
 		mapper.registerModule(new Hibernate5Module());
 		
 		DirectorDAO directorDAO = new DirectorDAO();
-		DirectorServices directorServices = new DirectorServices(directorDAO);
+		DirectorServices directorServices = new DirectorServices(directorDAO);  // manual wiring
 		DirectorServlet directorServlet = new DirectorServlet(directorServices, mapper);
 		
 		MovieDAO movieDAO = new MovieDAO();

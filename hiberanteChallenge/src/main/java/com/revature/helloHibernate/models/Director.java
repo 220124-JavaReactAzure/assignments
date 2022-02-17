@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity //@Entity makes a Class a DB table
 @Table(name = "directors") //@Table lets us change some table values
-@JsonIdentityInfo(
+@JsonIdentityInfo( // This helps witht he serialization to stop recursion with hibernate joins
 		  generator = ObjectIdGenerators.PropertyGenerator.class, 
 		  property = "id")
 public class Director {
@@ -30,19 +30,20 @@ public class Director {
 	
 	//I could give these all fields @Column annotations, but Hibernate will handle them on its own 
 	//The only time I would NEED @Column is if I'm changing attributes like constraints
-	@Column(unique = true, nullable = false)
-	private String first_name;
+	@Column(name ="first_name", unique = true, nullable = false)
+	private String firstName;
 	
-	//@Column
-	private String last_name;
+	@Column(name="last_name")
+	private String lastName;
 	
-	//@Column
-	private int year_born;
+	@Column(name="year_born")
+	private int yearBorn;
 
 	//what's mappedBy? It's the field in the Movie Class that references the Director class
 	//This is how we can achieve ManyToMany functionality without using the ManyToMany annotation, which has more steps
 	
 	@OneToMany(mappedBy="director", fetch=FetchType.EAGER)
+	@JsonIgnoreProperties(value="director")
 	private List<Movie> filmography;
 
 	//boilerplate code below.....................
@@ -55,24 +56,28 @@ public class Director {
 		// TODO Auto-generated constructor stub
 	}
 
-	//all args with no id
-	public Director(String first_name, String last_name, int year_born, List<Movie> filmography) {
+	
+
+	public Director(String firstName, String lastName, int yearBorn, List<Movie> filmography) {
 		super();
-		this.first_name = first_name;
-		this.last_name = last_name;
-		this.year_born = year_born;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.yearBorn = yearBorn;
 		this.filmography = filmography;
 	}
 
-	//all args
-	public Director(int id, String first_name, String last_name, int year_born, List<Movie> filmography) {
+
+
+	public Director(int id, String firstName, String lastName, int yearBorn, List<Movie> filmography) {
 		super();
 		this.id = id;
-		this.first_name = first_name;
-		this.last_name = last_name;
-		this.year_born = year_born;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.yearBorn = yearBorn;
 		this.filmography = filmography;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -82,28 +87,28 @@ public class Director {
 		this.id = id;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public int getYear_born() {
-		return year_born;
+	public int getYearBorn() {
+		return yearBorn;
 	}
 
-	public void setYear_born(int year_born) {
-		this.year_born = year_born;
+	public void setYearBorn(int yearBorn) {
+		this.yearBorn = yearBorn;
 	}
 
 	public List<Movie> getFilmography() {
@@ -114,10 +119,15 @@ public class Director {
 		this.filmography = filmography;
 	}
 
+	public String toMovieString() {
+		return "Director [id=" + id + ", first_name=" + firstName + ", last_name=" + lastName + ", year_born="
+				+ yearBorn + "]";
+	}
+	
 	@Override
 	public String toString() {
-		return "Director [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", year_born="
-				+ year_born + ", filmography=" + filmography + "]";
+		return "Director [id=" + id + ", first_name=" + firstName + ", last_name=" + lastName + ", year_born="
+				+ yearBorn + "]";
 	}
 
 	@Override
@@ -125,10 +135,10 @@ public class Director {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((filmography == null) ? 0 : filmography.hashCode());
-		result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
-		result = prime * result + year_born;
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + yearBorn;
 		return result;
 	}
 
@@ -146,19 +156,19 @@ public class Director {
 				return false;
 		} else if (!filmography.equals(other.filmography))
 			return false;
-		if (first_name == null) {
-			if (other.first_name != null)
+		if (firstName == null) {
+			if (other.firstName != null)
 				return false;
-		} else if (!first_name.equals(other.first_name))
+		} else if (!firstName.equals(other.firstName))
 			return false;
 		if (id != other.id)
 			return false;
-		if (last_name == null) {
-			if (other.last_name != null)
+		if (lastName == null) {
+			if (other.lastName != null)
 				return false;
-		} else if (!last_name.equals(other.last_name))
+		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (year_born != other.year_born)
+		if (yearBorn != other.yearBorn)
 			return false;
 		return true;
 	}
