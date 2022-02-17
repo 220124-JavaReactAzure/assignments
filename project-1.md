@@ -4,6 +4,10 @@
 
 Your first project will be launching a wedding planner(give it a name) for a company of your own creation with your business partner on Friday February, 25th. The objective of this project is to deploy a web application to a local tomcat server that can handle the following requests for Employees, the Betrothed and Attendees.
 
+## MVP ERD
+
+![](./p1-MVP-ERD.png)
+
 # User Stories
 
 ## As A: Employee
@@ -13,7 +17,7 @@ Your first project will be launching a wedding planner(give it a name) for a com
 ## As A: The Bethrothed
 
 -   [ ] View/edit my wedding budgetary details
--   [ ] Check Availability/Schedule(Range of Dates) for:
+-   [ ] Check Availability(Preferred: Range of Dates) & Schedule for:
     -   [ ] venues
     -   [ ] caterers
     -   [ ] florists

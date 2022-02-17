@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import com.revature.helloHibernate.models.Director;
+import com.revature.helloHibernate.models.Movie;
 
 // TODO: Implement me
 public class HibernateUtil {
@@ -28,6 +29,7 @@ public class HibernateUtil {
 			configuration.setProperties(props);
 			// ONE ADDITIONAL STEP I NEED TO INCLUDE
 			configuration.addAnnotatedClass(Director.class);
+			configuration.addAnnotatedClass(Movie.class);
 	
 			// ServiceRegistry
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();

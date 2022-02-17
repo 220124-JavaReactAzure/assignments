@@ -7,9 +7,12 @@ import javax.servlet.annotation.WebListener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.helloHibernate.dao.DirectorDAO;
+import com.revature.helloHibernate.dao.MovieDAO;
 import com.revature.helloHibernate.models.Director;
 import com.revature.helloHibernate.services.DirectorServices;
+import com.revature.helloHibernate.services.MovieServices;
 import com.revature.helloHibernate.web.servlets.DirectorServlet;
+import com.revature.helloHibernate.web.servlets.MovieServlet;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
@@ -23,9 +26,13 @@ public class ContextLoaderListener implements ServletContextListener {
 		DirectorServices directorServices = new DirectorServices(directorDAO);
 		DirectorServlet directorServlet = new DirectorServlet(directorServices, mapper);
 		
+		MovieDAO movieDAO = new MovieDAO();
+		MovieServices movieServices = new MovieServices(movieDAO);
+		MovieServlet movieServlet = new MovieServlet(movieServices, directorServices, mapper);
+		
 		ServletContext context = sce.getServletContext();
 		context.addServlet("DirectorServlet", directorServlet).addMapping("/directors/*");
-		
+		context.addServlet("MovieServlet", movieServlet).addMapping("/movies/*");
 		
 	}
 	

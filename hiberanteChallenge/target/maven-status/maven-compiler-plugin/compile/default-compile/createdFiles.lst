@@ -1,3 +1,4 @@
+com\revature\helloHibernate\models\DirectorMovie.class
 com\revature\helloHibernate\dao\DirectorDAO.class
 com\revature\helloHibernate\services\DirectorServices.class
 com\revature\helloHibernate\models\Movie.class
