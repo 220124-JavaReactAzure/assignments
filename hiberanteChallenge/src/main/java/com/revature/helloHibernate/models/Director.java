@@ -1,13 +1,27 @@
 package com.revature.helloHibernate.models;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 // TODO: Let's add our Hibernate Annotations here
@@ -31,6 +45,25 @@ public class Director {
 	
 	@Column(unique = true, nullable = false)
 	private String email;
+	
+
+//	@JsonManagedReference
+//	@ManyToMany(fetch=FetchType.EAGER,
+//			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+//					 CascadeType.DETACH, CascadeType.REFRESH})
+//	@JoinTable(
+//		name="directors_movies",
+//		joinColumns = @JoinColumn(name="director_id"),
+//		inverseJoinColumns = @JoinColumn(name="movie_id")
+//	)
+	@JsonManagedReference
+	@OneToMany(mappedBy="director", fetch=FetchType.EAGER)
+	private List<Movie> movies;
+	
+//	@JsonManagedReference
+//	@OneToMany(mappedBy="director", fetch=FetchType.EAGER)
+//	private List<Movie> movies;
+	
 	
 	
 	//Boilerplate
@@ -80,6 +113,12 @@ public class Director {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public List<Movie> getMovies() {
+		return movies;
+	}
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
+	}
 	@Override
 	public String toString() {
 		return "Director [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", yearBorn=" + yearBorn
@@ -87,7 +126,7 @@ public class Director {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, id, lastName, yearBorn);
+		return Objects.hash(email, firstName, id, lastName, movies, yearBorn);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -99,10 +138,9 @@ public class Director {
 			return false;
 		Director other = (Director) obj;
 		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName) && id == other.id
-				&& Objects.equals(lastName, other.lastName) && yearBorn == other.yearBorn;
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(movies, other.movies)
+				&& yearBorn == other.yearBorn;
 	}
-	
-	
 	
 	
 }

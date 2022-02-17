@@ -23,7 +23,8 @@ public class DirectorServices {
 	}
 	
 	public Director getDirectorById(int id){
-		
+		Director director = directorDAO.getDirectorById(id);
+		System.out.println(director.getMovies());
 		return directorDAO.getDirectorById(id);
 	}
 	
