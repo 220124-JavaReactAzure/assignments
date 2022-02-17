@@ -29,8 +29,8 @@ Your first project will be launching a wedding planner(give it a name) for a com
 
 -   [ ] Contact information
 -   [ ] View Venue Information
--   [ ] Choose Dinner/Lunch options(Meat, Fish & Veggie Option)
--   [ ] Confirm/Cancel attendance and plus one
+-   [ ] Choose Meal options(Meat, Fish & Veggie Option)
+-   [ ] Confirm/Cancel plus one (defaults to no)
 
 ### Stretch(Optional)
 
