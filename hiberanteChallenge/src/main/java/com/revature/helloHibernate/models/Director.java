@@ -1,133 +1,137 @@
-package com.revature.helloHibernate.models;
+ package com.revature.helloHibernate.models;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-
-// TODO: Let's add our Hibernate Annotations here
-@Entity
-@Table(name="directors")
+@Entity //@Entity makes a Class a DB table
+@Table(name = "directors") //@Table lets us change some table values
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 public class Director {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="director_id")
+
+	@Id //This will make the field a primary key
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //this makes our PK serial
+	@Column(name = "director_id") //usually I'll just call a field what I want it to be called instead of doing this...
 	private int id;
 	
-	@Column(name="first_name")
-	private String firstName;
-	
-	@Column(name="last_name")
-	private String lastName;
-	
-	@Column(name="year_born")
-	private int yearBorn;
-	
+	//I could give these all fields @Column annotations, but Hibernate will handle them on its own 
+	//The only time I would NEED @Column is if I'm changing attributes like constraints
 	@Column(unique = true, nullable = false)
-	private String email;
+	private String first_name;
 	
+	//@Column
+	private String last_name;
+	
+	//@Column
+	private int year_born;
 
-//	@JsonManagedReference
-//	@ManyToMany(fetch=FetchType.EAGER,
-//			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-//					 CascadeType.DETACH, CascadeType.REFRESH})
-//	@JoinTable(
-//		name="directors_movies",
-//		joinColumns = @JoinColumn(name="director_id"),
-//		inverseJoinColumns = @JoinColumn(name="movie_id")
-//	)
-	@JsonManagedReference
+	//what's mappedBy? It's the field in the Movie Class that references the Director class
+	//This is how we can achieve ManyToMany functionality without using the ManyToMany annotation, which has more steps
+	
 	@OneToMany(mappedBy="director", fetch=FetchType.EAGER)
-	private List<Movie> movies;
+	private List<Movie> filmography;
+
+	//boilerplate code below.....................
 	
-//	@JsonManagedReference
-//	@OneToMany(mappedBy="director", fetch=FetchType.EAGER)
-//	private List<Movie> movies;
-	
-	
-	
-	//Boilerplate
-	public Director(int id, String firstName, String lastName, int yearBorn) {
+	//Classes come with a no args constructor by default
+	//BUT if you add a single constructor, that default constructor goes away
+	//So we would need to add a no args (just in case)
+	public Director() {
+		super(); 
+		// TODO Auto-generated constructor stub
+	}
+
+	//all args with no id
+	public Director(String first_name, String last_name, int year_born, List<Movie> filmography) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.year_born = year_born;
+		this.filmography = filmography;
+	}
+
+	//all args
+	public Director(int id, String first_name, String last_name, int year_born, List<Movie> filmography) {
 		super();
 		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.yearBorn = yearBorn;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.year_born = year_born;
+		this.filmography = filmography;
 	}
-	public Director(String firstName, String lastName, int yearBorn) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.yearBorn = yearBorn;
-	}
-	public Director() {
-		super();
-	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getFirstName() {
-		return firstName;
+
+	public String getFirst_name() {
+		return first_name;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
-	public String getLastName() {
-		return lastName;
+
+	public String getLast_name() {
+		return last_name;
 	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
 	}
-	public int getYearBorn() {
-		return yearBorn;
+
+	public int getYear_born() {
+		return year_born;
 	}
-	public void setYearBorn(int yearBorn) {
-		this.yearBorn = yearBorn;
+
+	public void setYear_born(int year_born) {
+		this.year_born = year_born;
 	}
-	public String getEmail() {
-		return email;
+
+	public List<Movie> getFilmography() {
+		return filmography;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setFilmography(List<Movie> filmography) {
+		this.filmography = filmography;
 	}
-	public List<Movie> getMovies() {
-		return movies;
-	}
-	public void setMovies(List<Movie> movies) {
-		this.movies = movies;
-	}
+
 	@Override
 	public String toString() {
-		return "Director [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", yearBorn=" + yearBorn
-				+ ", email=" + email + "]";
+		return "Director [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", year_born="
+				+ year_born + ", filmography=" + filmography + "]";
 	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, id, lastName, movies, yearBorn);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((filmography == null) ? 0 : filmography.hashCode());
+		result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
+		result = prime * result + year_born;
+		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -137,10 +141,28 @@ public class Director {
 		if (getClass() != obj.getClass())
 			return false;
 		Director other = (Director) obj;
-		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName) && id == other.id
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(movies, other.movies)
-				&& yearBorn == other.yearBorn;
+		if (filmography == null) {
+			if (other.filmography != null)
+				return false;
+		} else if (!filmography.equals(other.filmography))
+			return false;
+		if (first_name == null) {
+			if (other.first_name != null)
+				return false;
+		} else if (!first_name.equals(other.first_name))
+			return false;
+		if (id != other.id)
+			return false;
+		if (last_name == null) {
+			if (other.last_name != null)
+				return false;
+		} else if (!last_name.equals(other.last_name))
+			return false;
+		if (year_born != other.year_born)
+			return false;
+		return true;
 	}
+
 	
 	
 }

@@ -78,7 +78,7 @@ public class DirectorDAO {
 //					" WHERE director_id=" + director.getId());
 			
 			Query query = session.createQuery("update Director set email= :email, first_name= :firstName, last_name= :lastName, year_born=:yearBorn where director_id = :id");
-			query.setParameter("email", director.getEmail());
+			//query.setParameter("email", director.getEmail());
 			query.executeUpdate();
 			transaction.commit();
 		} catch (HibernateException | IOException e) {

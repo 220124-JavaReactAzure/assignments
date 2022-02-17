@@ -6,6 +6,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.revature.helloHibernate.dao.DirectorDAO;
 import com.revature.helloHibernate.dao.MovieDAO;
 import com.revature.helloHibernate.models.Director;
@@ -21,6 +22,7 @@ public class ContextLoaderListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new Hibernate5Module());
 		
 		DirectorDAO directorDAO = new DirectorDAO();
 		DirectorServices directorServices = new DirectorServices(directorDAO);
