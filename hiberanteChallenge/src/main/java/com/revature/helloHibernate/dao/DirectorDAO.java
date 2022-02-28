@@ -12,14 +12,14 @@ import com.revature.helloHibernate.models.Director;
 import com.revature.helloHibernate.util.HibernateUtil;
 
 public class DirectorDAO {
-	public boolean addDirector(Director director) {
+	public Director addDirector(Director director) {
 		try {
 			Session session = HibernateUtil.getSession();
 			session.save(director);
-			return true;
+			return director;
 		} catch (HibernateException | IOException e) {
 			e.printStackTrace();
-			return false;
+			return director;
 		} finally {
 			HibernateUtil.closeSession();
 		}

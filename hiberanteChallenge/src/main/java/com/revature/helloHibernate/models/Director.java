@@ -68,6 +68,15 @@ public class Director {
 
 
 
+	public Director(String firstName, String lastName, int yearBorn) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.yearBorn = yearBorn;
+	}
+
+
+
 	public Director(int id, String firstName, String lastName, int yearBorn, List<Movie> filmography) {
 		super();
 		this.id = id;

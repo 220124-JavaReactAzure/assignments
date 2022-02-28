@@ -12,8 +12,9 @@ public class DirectorServices {
 		this.directorDAO = directorDAO;
 	}
 	
-	public boolean addDirector(Director director) {
-		
+	public Director addDirector(Director director) {
+		List<Director> directors = directorDAO.getAllDirectors();
+		System.out.println(directors);
 		return directorDAO.addDirector(director);
 	}
 	
