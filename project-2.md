@@ -6,7 +6,7 @@ It's time to build a full-stack application leveraging Spring for the applicatio
 
 Application must leverage the full stack:
 
--   PostGreSQL for persistence
+-   Azure SQL/PostGreSQL for persistence
 -   API built with Java 8 and Spring 5
 -   UI built with HTML, CSS, and JavaScript
 
@@ -46,4 +46,4 @@ In order to make your repositories accessible to your Azure Accounts via Azure D
 
 ## Presentations
 
-Presentations will occur on the morning of Friday, February 11th, 2022. All team members must have a speaking role in the presentation of the application, and a **PowerPoint slideshow** must accompany your presentation. Aim for 20-25min.
+Presentations will occur on the morning of Friday, March 11th, 2022. All team members must have a speaking role in the presentation of the application, and a **PowerPoint slideshow** must accompany your presentation. Aim for 20-25min.
